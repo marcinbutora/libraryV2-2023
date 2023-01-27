@@ -19,6 +19,16 @@ public class PersonService {
         return repository.save(person);
     }
 
+    public void deletePerson(long id) {
+        Optional<Person> person = repository.findPersonById(id);
+        if (person.isPresent()) {
+            repository.delete(person.get());
+        } else {
+            throw new IllegalArgumentException("Person with id " + id + " not found");
+        }
+    }
+
+
     public void isPhoneNumberExists(Person person) {
         if (phoneNumberExists(person.getPhoneNumber())) {
             throw new IllegalArgumentException("Phone number already exists");

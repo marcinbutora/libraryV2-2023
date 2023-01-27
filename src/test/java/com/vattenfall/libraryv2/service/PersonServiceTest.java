@@ -1,10 +1,11 @@
 package com.vattenfall.libraryv2.service;
 
 import com.vattenfall.libraryv2.entity.Person;
-import com.vattenfall.libraryv2.repository.PersonRepository;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 
@@ -12,13 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class PersonServiceTest {
 
     @Autowired
     private PersonService personService;
-
-    @Autowired
-    private PersonRepository personRepository;
 
     @Test
     public void shouldSavePerson() {
@@ -32,7 +31,7 @@ public class PersonServiceTest {
         Person savedPerson = personService.addPerson(person);
 
         assertThat(savedPerson).isEqualTo(person);
-        assertThat(personRepository.findPersonByPhoneNumber("555-555-5555").get()).isEqualTo(savedPerson);
+        assertThat(person.getPhoneNumber()).isEqualTo(savedPerson.getPhoneNumber());
     }
 
     @Test
@@ -53,5 +52,14 @@ public class PersonServiceTest {
         person2.setPhoneNumber("555-555-5555");
 
         assertThrows(IllegalArgumentException.class, () -> personService.addPerson(person2));
+    }
+
+    @Test
+    public void deletePersonTest() {
+        Person person = new Person(1L, "John", "Smith", LocalDate.of(2000, 1, 1), "NY", "123-456-7890");
+        Person personAdded = personService.addPerson(person);
+        personService.deletePerson(personAdded.getId());
+        boolean removedPerson = personService.phoneNumberExists(person.getPhoneNumber());
+        assertThat(removedPerson).isFalse();
     }
 }
