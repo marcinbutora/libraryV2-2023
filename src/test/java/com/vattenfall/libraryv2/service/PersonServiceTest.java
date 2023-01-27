@@ -2,7 +2,7 @@ package com.vattenfall.libraryv2.service;
 
 import com.vattenfall.libraryv2.entity.Person;
 import com.vattenfall.libraryv2.repository.PersonRepository;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,7 +21,7 @@ public class PersonServiceTest {
     private PersonRepository personRepository;
 
     @Test
-    void shouldSavePerson() {
+    public void shouldSavePerson() {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("Doe");
@@ -36,7 +36,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenPhoneNumberExists() {
+    public void shouldThrowIllegalArgumentExceptionWhenPhoneNumberExists() {
         Person person1 = new Person();
         person1.setFirstName("John");
         person1.setLastName("Doe");
@@ -52,6 +52,6 @@ public class PersonServiceTest {
         person2.setCity("New York");
         person2.setPhoneNumber("555-555-5555");
 
-        assertThrows(IllegalArgumentException.class,()->personService.addPerson(person2));
+        assertThrows(IllegalArgumentException.class, () -> personService.addPerson(person2));
     }
 }
