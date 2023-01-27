@@ -1,6 +1,7 @@
 package com.vattenfall.libraryv2.service;
 
 import com.vattenfall.libraryv2.entity.Person;
+import com.vattenfall.libraryv2.repository.PersonRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 @SpringBootTest
@@ -18,6 +20,8 @@ public class PersonServiceTest {
 
     @Autowired
     private PersonService personService;
+    @Autowired
+    private PersonRepository personRepository;
 
     @Test
     public void shouldSavePerson() {
@@ -61,5 +65,23 @@ public class PersonServiceTest {
         personService.deletePerson(personAdded.getId());
         boolean removedPerson = personService.phoneNumberExists(person.getPhoneNumber());
         assertThat(removedPerson).isFalse();
+    }
+
+    @Test
+    public void updatePersonTest() {
+        // Given
+        Long id = 1L;
+        Person person = new Person(1L, "John", "Doe", LocalDate.of(1990, 1, 1), "New York", "555-555-555");
+        personService.addPerson(person);
+        Person updatedPerson = new Person(1L, "Jane", "Doe", LocalDate.of(1995, 1, 1), "Los Angeles", "555-555-555");
+        // When
+        personService.updatePerson(id, updatedPerson);
+        Person result = personRepository.findPersonById(id).get();
+        // Then
+        assertEquals(updatedPerson.getFirstName(), result.getFirstName());
+        assertEquals(updatedPerson.getLastName(), result.getLastName());
+        assertEquals(updatedPerson.getBirthDate(), result.getBirthDate());
+        assertEquals(updatedPerson.getCity(), result.getCity());
+        assertEquals(updatedPerson.getPhoneNumber(), result.getPhoneNumber());
     }
 }

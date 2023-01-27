@@ -1,6 +1,7 @@
 package com.vattenfall.libraryv2.service;
 
 import com.vattenfall.libraryv2.entity.Person;
+import com.vattenfall.libraryv2.exception.ResourceNotFoundException;
 import com.vattenfall.libraryv2.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,20 @@ public class PersonService {
         } else {
             throw new IllegalArgumentException("Person with id " + id + " not found");
         }
+    }
+
+    public void updatePerson(Long id, Person updatedPerson) {
+        Person person = findPersonByID(id);
+        person.setFirstName(updatedPerson.getFirstName());
+        person.setLastName(updatedPerson.getLastName());
+        person.setBirthDate(updatedPerson.getBirthDate());
+        person.setCity(updatedPerson.getCity());
+        person.setPhoneNumber(updatedPerson.getPhoneNumber());
+        repository.save(person);
+    }
+
+    private Person findPersonByID(Long id) {
+        return repository.findPersonById(id).orElseThrow(() -> new ResourceNotFoundException("Person not found with id: " + id));
     }
 
 
