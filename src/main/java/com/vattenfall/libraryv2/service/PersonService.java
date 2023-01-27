@@ -19,13 +19,13 @@ public class PersonService {
         return repository.save(person);
     }
 
-    private void isPhoneNumberExists(Person person) {
+    public void isPhoneNumberExists(Person person) {
         if (phoneNumberExists(person.getPhoneNumber())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
     }
 
-    private boolean phoneNumberExists(String phoneNumber) {
+    public boolean phoneNumberExists(String phoneNumber) {
         Optional<Person> person = repository.findPersonByPhoneNumber(phoneNumber);
         return person.isPresent();
     }
