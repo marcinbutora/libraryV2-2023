@@ -73,8 +73,9 @@ public class PersonServiceTest {
         Long id = 1L;
         Person person = new Person(1L, "John", "Doe", LocalDate.of(1990, 1, 1), "New York", "555-555-555");
         personService.addPerson(person);
-        Person updatedPerson = new Person(1L, "Jane", "Doe", LocalDate.of(1995, 1, 1), "Los Angeles", "555-555-555");
+        Person updatedPerson = new Person(1L, "Jane", "Doe", LocalDate.of(1995, 1, 1), "Los Angeles", "555-555-552");
         // When
+        personService.addPerson(updatedPerson);
         personService.updatePerson(id, updatedPerson);
         Person result = personRepository.findPersonById(id).get();
         // Then

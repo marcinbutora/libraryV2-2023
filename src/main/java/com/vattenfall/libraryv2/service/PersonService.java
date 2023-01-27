@@ -1,6 +1,7 @@
 package com.vattenfall.libraryv2.service;
 
 import com.vattenfall.libraryv2.entity.Person;
+import com.vattenfall.libraryv2.exception.PhoneNumberNotFoundException;
 import com.vattenfall.libraryv2.exception.ResourceNotFoundException;
 import com.vattenfall.libraryv2.repository.PersonRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class PersonService {
         if (person.isPresent()) {
             repository.delete(person.get());
         } else {
-            throw new IllegalArgumentException("Person with id " + id + " not found");
+            throw new ResourceNotFoundException("Person with id " + id + " not found");
         }
     }
 
@@ -46,7 +47,7 @@ public class PersonService {
 
     public void isPhoneNumberExists(Person person) {
         if (phoneNumberExists(person.getPhoneNumber())) {
-            throw new IllegalArgumentException("Phone number already exists");
+            throw new PhoneNumberNotFoundException("Phone number already exists " + person.getPhoneNumber());
         }
     }
 
