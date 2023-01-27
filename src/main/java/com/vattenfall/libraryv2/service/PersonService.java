@@ -6,6 +6,7 @@ import com.vattenfall.libraryv2.exception.ResourceNotFoundException;
 import com.vattenfall.libraryv2.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +15,10 @@ public class PersonService {
 
     public PersonService(PersonRepository repository) {
         this.repository = repository;
+    }
+
+    public List<Person> getAllPeople() {
+        return repository.findAll();
     }
 
     public Person addPerson(Person person) {
